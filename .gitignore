@@ -1,0 +1,7 @@
+# Ignore the following folders
+
+12misc/
+Data/
+btp/
+augmented_data/
+test.py
