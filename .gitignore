@@ -5,3 +5,6 @@ Data/
 btp/
 augmented_data/
 test.py
+__pycache__/
+misc/
+severity_labels.csv
