@@ -39,8 +39,13 @@ def generate_severity_csv(label_dir, output_file):
     # Iterate through label files
     for file in os.listdir(label_dir):
         if file.endswith('.json'):
-            # Extract image ID from filename (assuming filename format: label_post_image_0.json)
-            image_id = file.replace('label_post_', '').replace('.json', '')
+            # Extract image ID and disaster type from filename
+            if 'post' in file:
+                image_id = file.replace('label_post_', '').replace('_post_disaster.json', '')
+                disaster_type = 'post'
+            elif 'pre' in file:
+                image_id = file.replace('label_pre_', '').replace('_pre_disaster.json', '')
+                disaster_type = 'pre'
             
             # Load label data
             with open(os.path.join(label_dir, file), 'r') as f:
@@ -54,17 +59,21 @@ def generate_severity_csv(label_dir, output_file):
                 severity = 0  # Default severity level for error cases
             
             # Store severity level in dictionary
-            severity_data[image_id] = severity
+            severity_data[f"{image_id}_{disaster_type}_disaster"] = severity
     
     # Create DataFrame from severity data
     severity_df = pd.DataFrame(list(severity_data.items()), columns=['image_id', 'severity_level'])
     
     # Save DataFrame to CSV file
     severity_df.to_csv(output_file, index=False)
+    
+    
+    
 
 # Define label directory and output CSV file
-label_dir = 'augmented_data/augmented_labels'
-output_file = 'severity.csv'
+# label_dir = 'augmented_data/augmented_labels'
+label_dir = 'Data/labels'
+output_file = 'severity_labels.csv'
 
 # Generate severity.csv file
 generate_severity_csv(label_dir, output_file)
